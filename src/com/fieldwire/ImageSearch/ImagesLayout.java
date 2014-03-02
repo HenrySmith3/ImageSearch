@@ -6,6 +6,9 @@ import android.graphics.drawable.Drawable;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 
+/**
+ * Basically this is just LinearLayout but it reuses views instead of destroying them and creating new ones.
+ */
 public class ImagesLayout extends LinearLayout {
     int currentIndex = 0;
     public ImagesLayout(Context context) {

@@ -8,12 +8,14 @@ import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.view.View;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import java.io.InputStream;
 import java.net.URL;
 
+/**
+ * A feed is a single instance of querying the google images api.
+ */
 class Feed extends AsyncTask<String, Void, Bitmap[]> {
 
     private ImageView imageView;
@@ -26,6 +28,11 @@ class Feed extends AsyncTask<String, Void, Bitmap[]> {
         this.activity = activity;
     }
 
+    /**
+     * Runs the actual searching. Only needs one url, to run multiple, spawn multiple feeds.
+     * @param urls The first url will be searched on.
+     * @return The bitmap array of search results.
+     */
     protected Bitmap[] doInBackground(String... urls) {
         Bitmap[] retVal = new Bitmap[1];
         try {
@@ -33,6 +40,7 @@ class Feed extends AsyncTask<String, Void, Bitmap[]> {
             InputStream is = (InputStream)url.getContent();
             java.util.Scanner s = new java.util.Scanner(is).useDelimiter("\\A");
             String theString = s.hasNext() ? s.next() : "";
+            s.close();
             JSONObject jsonObject = new JSONObject(theString);
             JSONArray array = jsonObject.getJSONObject("responseData").getJSONArray("results");
 
@@ -40,7 +48,9 @@ class Feed extends AsyncTask<String, Void, Bitmap[]> {
             for (int i = 0; i < array.length(); i++) {
                 JSONObject object = array.getJSONObject(i);
                 String imageUrl = object.getString("tbUrl");
-                retVal[i] =  BitmapFactory.decodeStream((InputStream)new URL(imageUrl).getContent());
+                InputStream imageStream = (InputStream)new URL(imageUrl).getContent();
+                retVal[i] =  BitmapFactory.decodeStream(imageStream);
+               imageStream.close();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -49,6 +59,10 @@ class Feed extends AsyncTask<String, Void, Bitmap[]> {
 
     }
 
+    /**
+     * This is what actually updates the scrolling images window.
+     * @param feed The bitmaps that will be added to the scrolling window.
+     */
     protected void onPostExecute(Bitmap[] feed) {
         for (Bitmap bitmap : feed) {
             ImageView view = new ImageView(activity);
