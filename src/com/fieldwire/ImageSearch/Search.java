@@ -7,9 +7,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.webkit.JavascriptInterface;
-import android.widget.Button;
-import android.widget.ImageView;
-import android.widget.TextView;
+import android.widget.*;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
@@ -24,18 +22,23 @@ public class Search extends Activity {
     Button button;
     TextView text;
     ImageView imageView;
+    HorizontalScrollView horizontalScrollView;
+    LinearLayout linearLayout;
+    Activity activity;//TODO: THIS IS BAD. There seriously must be a better way to do this.
     /**
      * Called when the activity is first created.
      */
     @Override
     public void onCreate(Bundle savedInstanceState) {
+        activity = this;
         setContentView(R.layout.main);
         super.onCreate(savedInstanceState);
         button = (Button)findViewById(R.id.button);
         text = (TextView)findViewById(R.id.editText);
         imageView = (ImageView)findViewById(R.id.imageView);
-        feed = new Feed();
-        feed.setImageView(imageView);
+        horizontalScrollView = (HorizontalScrollView)findViewById(R.id.horizontalScrollView);
+        linearLayout = new LinearLayout(this);
+        horizontalScrollView.addView(linearLayout);
         button.setOnClickListener(new ClickListener());
     }
 
@@ -44,7 +47,13 @@ public class Search extends Activity {
 
         @Override
         public void onClick(View view) {
-            AsyncTask<String, Void, Bitmap> task = feed.execute(url + text.getText().toString());
+            linearLayout.removeAllViews();
+            for (int i = 0; i < 20; i += 4) {
+                feed = new Feed();
+                feed.setImageViews(imageView, linearLayout, activity);
+                AsyncTask<String, Void, Bitmap[]> task = feed.execute(url + text.getText().toString() +
+                    "&start=" + i);
+            }
 
         }
     }
