@@ -24,7 +24,7 @@ public class Search extends Activity {
     AutoCompleteTextView text;
     ImageView imageView;
     HorizontalScrollView horizontalScrollView;
-    LinearLayout linearLayout;
+    ImagesLayout linearLayout;
     Activity activity;//TODO: this seems bad but I don't know what else to do.
     ArrayList<String> suggestions;
     final int IMAGES_TO_RETRIEVE = 20;
@@ -41,7 +41,7 @@ public class Search extends Activity {
         text = (AutoCompleteTextView)findViewById(R.id.autoCompleteTextView);
         imageView = (ImageView)findViewById(R.id.imageView);
         horizontalScrollView = (HorizontalScrollView)findViewById(R.id.horizontalScrollView);
-        linearLayout = new LinearLayout(this);
+        linearLayout = new ImagesLayout(this);
         horizontalScrollView.addView(linearLayout);
         button.setOnClickListener(new ClickListener());
     }
@@ -54,7 +54,7 @@ public class Search extends Activity {
             if (text.getText().toString().isEmpty()) return;
             suggestions.add(text.getText().toString());
             text.setAdapter(new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, suggestions));
-            linearLayout.removeAllViews();
+            linearLayout.clearViews();
             for (int i = 0; i <= IMAGES_TO_RETRIEVE; i += 4) {
                 feed = new Feed(imageView, linearLayout, activity);
                 feed.execute(url + "'" + text.getText().toString().replace(" ", "%20") + "'" + "&start=" + i);

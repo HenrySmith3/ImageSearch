@@ -17,10 +17,10 @@ import java.net.URL;
 class Feed extends AsyncTask<String, Void, Bitmap[]> {
 
     private ImageView imageView;
-    private LinearLayout linearLayout;
+    private ImagesLayout linearLayout;
     private Activity activity;
 
-    public Feed(ImageView imageView, LinearLayout linearLayout, Activity activity) {
+    public Feed(ImageView imageView, ImagesLayout linearLayout, Activity activity) {
         this.imageView = imageView;
         this.linearLayout = linearLayout;
         this.activity = activity;
@@ -54,7 +54,7 @@ class Feed extends AsyncTask<String, Void, Bitmap[]> {
             ImageView view = new ImageView(activity);
             view.setImageBitmap(bitmap);
             view.setOnClickListener(new PictureClickListener());
-            linearLayout.addView(view);
+            linearLayout.addImage(view);
         }
     }
     private class PictureClickListener implements View.OnClickListener {
