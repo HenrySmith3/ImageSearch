@@ -25,8 +25,9 @@ public class Search extends Activity {
     ImageView imageView;
     HorizontalScrollView horizontalScrollView;
     LinearLayout linearLayout;
-    Activity activity;//TODO: THIS IS BAD. There seriously must be a better way to do this.
+    Activity activity;//TODO: this seems bad but I don't know what else to do.
     ArrayList<String> suggestions;
+    final int IMAGES_TO_RETRIEVE = 20;
     /**
      * Called when the activity is first created.
      */
@@ -54,9 +55,8 @@ public class Search extends Activity {
             suggestions.add(text.getText().toString());
             text.setAdapter(new ArrayAdapter<String>(activity, android.R.layout.simple_list_item_1, suggestions));
             linearLayout.removeAllViews();
-            for (int i = 0; i < 20; i += 4) {
-                feed = new Feed();
-                feed.setImageViews(imageView, linearLayout, activity);
+            for (int i = 0; i <= IMAGES_TO_RETRIEVE; i += 4) {
+                feed = new Feed(imageView, linearLayout, activity);
                 feed.execute(url + "'" + text.getText().toString().replace(" ", "%20") + "'" + "&start=" + i);
             }
 

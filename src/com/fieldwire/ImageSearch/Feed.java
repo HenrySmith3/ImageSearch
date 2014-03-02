@@ -4,21 +4,14 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.BitmapDrawable;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.view.View;
-import android.widget.HorizontalScrollView;
-import android.widget.ImageSwitcher;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.xml.sax.InputSource;
-import org.xml.sax.XMLReader;
-
-import javax.xml.parsers.SAXParser;
-import javax.xml.parsers.SAXParserFactory;
 import java.io.InputStream;
-import java.io.ObjectInputStream;
 import java.net.URL;
 
 class Feed extends AsyncTask<String, Void, Bitmap[]> {
@@ -26,12 +19,11 @@ class Feed extends AsyncTask<String, Void, Bitmap[]> {
     private ImageView imageView;
     private LinearLayout linearLayout;
     private Activity activity;
-    //TODO this should just be a constructor
-    public void setImageViews(ImageView imageView, LinearLayout linearLayout, Activity activity) {
+
+    public Feed(ImageView imageView, LinearLayout linearLayout, Activity activity) {
         this.imageView = imageView;
         this.linearLayout = linearLayout;
         this.activity = activity;
-
     }
 
     protected Bitmap[] doInBackground(String... urls) {
@@ -64,18 +56,12 @@ class Feed extends AsyncTask<String, Void, Bitmap[]> {
             view.setOnClickListener(new PictureClickListener());
             linearLayout.addView(view);
         }
-//        imageView.setImageBitmap(feed[0]);
-        // TODO: check this.exception
-        // TODO: do something with the feed
     }
     private class PictureClickListener implements View.OnClickListener {
-        String url = "https://ajax.googleapis.com/ajax/services/search/images?v=1.0&q=";
-
         @Override
         public void onClick(View view) {
-            //TODO Holy shit this is a mess. Make this like three lines.
-            imageView.setImageBitmap(((BitmapDrawable)((ImageView)view).getDrawable()).getBitmap());
-
+            Drawable drawable = ((ImageView)view).getDrawable();
+            imageView.setImageBitmap(((BitmapDrawable)drawable).getBitmap());
         }
     }
 }
