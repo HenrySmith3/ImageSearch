@@ -64,7 +64,7 @@ class Feed extends AsyncTask<String, Void, Bitmap[]> {
             view.setOnClickListener(new PictureClickListener());
             linearLayout.addView(view);
         }
-        imageView.setImageBitmap(feed[0]);
+//        imageView.setImageBitmap(feed[0]);
         // TODO: check this.exception
         // TODO: do something with the feed
     }
